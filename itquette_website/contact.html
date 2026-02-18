@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contact | ITquette Autonomous Solutions</title>
+  <meta name="description" content="Contact ITquette Autonomous Solutions." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="nav">
+      <a class="brand" href="index.html">
+        <div class="logo" aria-hidden="true"><img src='assets/logo.png' alt='ITquette logo' /></div>
+        <div>
+          <div class="brand-title">ITquette Autonomous Solutions</div>
+          <span class="brand-sub">Incident and safety lifecycle management for autonomous operations</span>
+        </div>
+      </a>
+
+      <nav class="links" aria-label="Primary">
+        <a href="index.html" >Home</a>
+        <a href="insights.html" >Insights</a>
+        <a href="contact.html" style='color:var(--text); background:rgba(21,34,67,.65)'>Contact</a>
+      </nav>
+
+      <div class="cta">
+        <a class="btn" href="insights.html">Read insights</a>
+        <a class="btn primary" href="contact.html">Talk with us</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+<main>
+  <section class="page-hero">
+    <div class="wrap">
+      <div class="kicker"><span class="dot" aria-hidden="true"></span>Contact</div>
+      <h2>Start with one workflow and build from there</h2>
+      <p class="lead">Share the domain you operate in and the operational friction you want to remove. We will reply with focused next steps.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="split">
+        <div class="callout">
+          <h4>What to include</h4>
+          <ul class="list">
+            <li>Your domain: robotaxi, shuttle, trucking, yard, delivery, autonomy platform</li>
+            <li>Your current pain: triage, evidence, after action reviews, corrective actions, reporting</li>
+            <li>Your team and tool setup</li>
+          </ul>
+          <p style="margin-top:12px; color: var(--muted); font-size:13px;">
+            Email: <strong>hello@itquette.com</strong> (replace with your real email)<br />
+            LinkedIn: <strong>ITquette Autonomous Solutions</strong>
+          </p>
+          <p class="note">This site is a lightweight starter. Connect a real form service later.</p>
+        </div>
+
+        <div class="callout">
+          <h4>Send a message</h4>
+          <form onsubmit="event.preventDefault(); alert('Thanks. Replace this form with a real form service or a mailto link.');">
+            <input type="text" name="name" placeholder="Name" required />
+            <input type="email" name="email" placeholder="Email" required />
+            <input type="text" name="topic" placeholder="Topic (example: incident lifecycle, evidence readiness)" />
+            <textarea name="message" placeholder="What are you trying to improve, and what is currently painful?" required></textarea>
+            <button class="btn primary" type="submit">Send</button>
+            <p class="note">Form is a placeholder. Use Formspree, Tally, or a simple mailto link.</p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <strong style="color:var(--text);">ITquette Autonomous Solutions</strong><br />
+        <span>Autonomous vehicle incident and safety lifecycle management</span>
+      </div>
+      <div class="smalllinks">
+        <a href="index.html">Home</a>
+        <a href="insights.html">Insights</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div>© <span id="year"></span> ITquette Autonomous Solutions</div>
+    </div>
+  </div>
+</footer>
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
