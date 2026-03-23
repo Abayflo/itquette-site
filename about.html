@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — Abiodun Olorunfemi · ITquette Autonomous Lab</title>
+<meta name="description" content="ITquette Autonomous Lab was founded by Abiodun Olorunfemi — independent research on autonomous vehicle incident management, safety lifecycle governance, and operational resilience.">
+<link rel="stylesheet" href="style.css">
+<style>
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin: 40px 0; }
+  .about-left p { font-size: 15px; line-height: 1.78; color: #3a3834; margin-bottom: 18px; }
+  .about-left p strong { color: var(--ink); font-weight: 500; }
+  .about-right { }
+  .focus-list { list-style: none; margin: 0; }
+  .focus-list li {
+    padding: 14px 0;
+    border-bottom: 1px solid var(--rule);
+    font-size: 13.5px;
+    color: var(--muted);
+    line-height: 1.6;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .focus-list li:last-child { border-bottom: none; }
+  .focus-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--rule);
+    line-height: 1;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .focus-text strong { color: var(--ink); font-weight: 500; display: block; margin-bottom: 2px; font-size: 14px; }
+  .principle-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin: 28px 0 40px; }
+  .principle { border: 1px solid var(--rule); padding: 20px 18px; }
+  .principle-title { font-family: 'Cormorant Garamond', serif; font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 8px; line-height: 1.3; }
+  .principle p { font-size: 12.5px; margin: 0; }
+  @media (max-width: 640px) {
+    .about-grid { grid-template-columns: 1fr; gap: 32px; }
+    .principle-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-brand">
+    <div class="nav-mark">
+      <svg width="18" height="18" viewBox="0 0 22 22" fill="none">
+        <circle cx="11" cy="11" r="4.5" fill="none" stroke="#b8952a" stroke-width="1.4"/>
+        <circle cx="11" cy="11" r="9.5" fill="none" stroke="#b8952a" stroke-width="0.9"/>
+        <line x1="11" y1="1" x2="11" y2="4" stroke="#b8952a" stroke-width="1.4" stroke-linecap="round"/>
+        <line x1="11" y1="18" x2="11" y2="21" stroke="#b8952a" stroke-width="1.4" stroke-linecap="round"/>
+        <line x1="1" y1="11" x2="4" y2="11" stroke="#b8952a" stroke-width="1.4" stroke-linecap="round"/>
+        <line x1="18" y1="11" x2="21" y2="11" stroke="#b8952a" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div>
+      <div class="nav-name">ITquette</div>
+      <div class="nav-sub">Autonomous Lab</div>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="insights.html">Insights</a></li>
+    <li><a href="about.html" class="active">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</nav>
+<div class="gold-bar"></div>
+
+<main>
+
+  <span class="eyebrow">About the Lab</span>
+  <h1>Independent research.<br><em>Practical perspective.</em><br>No agenda.</h1>
+
+  <p class="standfirst">ITquette Autonomous Lab was founded by <strong>Abiodun Olorunfemi</strong> on a straightforward observation: the autonomous vehicle industry is scaling faster than its operational infrastructure. The technology conversation is mature. The incident management, safety governance, and evidence readiness conversation is not.</p>
+
+  <div class="about-grid">
+    <div class="about-left">
+      <p>Abiodun Olorunfemi brings a background in <strong>incident management and safety operations</strong> — the discipline of understanding how complex systems fail, how organisations respond under pressure, and what separates teams that improve consistently from those that repeat the same failure modes. That operational grounding shapes everything ITquette publishes.</p>
+      <p>Alongside that operational foundation, Abiodun has developed a <strong>research and intelligence practice</strong> focused specifically on the autonomous vehicle ecosystem — tracking partnerships, regulatory developments, technology moves, and deployment patterns across every layer of the AV stack. That breadth of intelligence informs the depth of the safety and incident work.</p>
+      <p>ITquette exists to bring those two threads together. Our work is grounded in how incident response and safety lifecycle management actually function in complex operational environments — not how they are described in standards documents or presented in conference papers.</p>
+      <p><strong>We publish what we find openly.</strong> Our research is available through this site and our LinkedIn platform. When organisations find it relevant to something they are actively working through, we welcome that conversation — approached with genuine curiosity about the problem rather than a predetermined solution to sell.</p>
+    </div>
+
+    <div class="about-right">
+      <div class="lc-label" style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.24em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;">What the research covers</div>
+      <ul class="focus-list">
+        <li>
+          <div class="focus-num">01</div>
+          <div class="focus-text">
+            <strong>Incident lifecycle and response</strong>
+            How organisations structure the full journey from first detection through closure — triage, evidence, coordination, after action review, and corrective action tracking.
+          </div>
+        </li>
+        <li>
+          <div class="focus-num">02</div>
+          <div class="focus-text">
+            <strong>Evidence readiness and regulator narratives</strong>
+            What gets captured, how it gets packaged, and whether the narrative that reaches a regulator or city partner is accurate, complete, and credible under scrutiny.
+          </div>
+        </li>
+        <li>
+          <div class="focus-num">03</div>
+          <div class="focus-text">
+            <strong>Safety governance and traceability</strong>
+            How safety claims are maintained as systems evolve — traceability between field performance, corrective actions, configuration changes, and updated safety cases.
+          </div>
+        </li>
+        <li>
+          <div class="focus-num">04</div>
+          <div class="focus-text">
+            <strong>Industry intelligence and partnership analysis</strong>
+            Tracking AV deployment partnerships, regulatory developments, and technology moves — published as timely analysis through our LinkedIn platform.
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <h2>How we think about this work</h2>
+
+  <div class="principle-grid">
+    <div class="principle">
+      <div class="principle-title">Operational over theoretical</div>
+      <p>Every insight is tested against what actually happens in complex operational environments — not what the standard says should happen or what a clean architecture diagram implies.</p>
+    </div>
+    <div class="principle">
+      <div class="principle-title">Specific over general</div>
+      <p>The AV industry has no shortage of general safety frameworks. What operators need is specific, applicable thinking about their particular scale, regulatory context, and operational structure.</p>
+    </div>
+    <div class="principle">
+      <div class="principle-title">Start narrow, build credibly</div>
+      <p>A complete governance framework that sits in a document and is never used is worse than nothing. We emphasise starting with one workflow, proving it works, then expanding — because that is how operational change actually happens.</p>
+    </div>
+    <div class="principle">
+      <div class="principle-title">Evidence as infrastructure</div>
+      <p>Good evidence readiness is not about preparing for the worst case incident. It is about building the operational infrastructure that makes every conversation with a regulator, city partner, or public stakeholder more grounded and more credible.</p>
+    </div>
+    <div class="principle">
+      <div class="principle-title">Trust is earned over time</div>
+      <p>No single incident response, however well handled, builds lasting trust. The operators who maintain their operating licences in competitive markets are the ones who have demonstrated consistent, improving behaviour across many incidents over time.</p>
+    </div>
+    <div class="principle">
+      <div class="principle-title">The ecosystem view matters</div>
+      <p>We track developments across AV technology companies, traditional automakers, ride hailing platforms, and regulators simultaneously. Patterns that are invisible within a single organisation become clear when viewed across the ecosystem.</p>
+    </div>
+  </div>
+
+  <div class="dark-strip">
+    <p>Our research is relevant to anyone building, deploying, or regulating autonomous vehicle operations — <strong>AV technology companies, traditional automakers, ride hailing platforms, and city and national regulators.</strong> The incident management and safety governance challenges that matter are shared across all of them.</p>
+  </div>
+
+  <div class="cta-strip">
+    <div>
+      <h3>Follow the work. Reach out if it resonates.</h3>
+      <p>Published openly through this site and LinkedIn. No subscription required.</p>
+    </div>
+    <a href="contact.html" class="cta-link">Get in touch →</a>
+  </div>
+
+</main>
+
+<footer>
+  <div class="footer-brand">
+    <div>
+      <div class="footer-name">ITquette Autonomous Lab</div>
+      <div class="footer-sub">Intelligence in Motion</div>
+    </div>
+  </div>
+  <ul class="footer-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="insights.html">Insights</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="footer-copy">© 2026 ITquette Autonomous Lab</div>
+</footer>
+
+</body>
+</html>
