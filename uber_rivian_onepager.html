@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Uber × Rivian — Itquette Autonomous Lab</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #07080d;
+    --surface: #0d0f18;
+    --border: rgba(255,255,255,0.08);
+    --rivian-green: #6ee7b7;
+    --uber-black: #1a1a2e;
+    --amber: #f59e0b;
+    --muted: rgba(255,255,255,0.38);
+    --text: rgba(255,255,255,0.92);
+    --text2: rgba(255,255,255,0.6);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* ── GRID BACKGROUND ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(110,231,183,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(110,231,183,0.03) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 0 60px;
+  }
+
+  /* ── BRAND BAR ── */
+  .brand-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 32px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(13,15,24,0.95);
+    backdrop-filter: blur(8px);
+  }
+  .brand-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .brand-icon {
+    width: 30px; height: 30px;
+    background: var(--rivian-green);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .brand-icon svg { width: 16px; height: 16px; }
+  .brand-name {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    letter-spacing: 0.02em;
+  }
+  .brand-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--rivian-green);
+    margin-top: 1px;
+  }
+  .brand-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ── HERO VISUAL ── */
+  .hero-visual {
+    position: relative;
+    height: 340px;
+    overflow: hidden;
+    background: #07080d;
+  }
+
+  /* 3D-style vehicle rendered in canvas */
+  canvas#hero { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to right,
+      rgba(7,8,13,0.0) 0%,
+      rgba(7,8,13,0.0) 50%,
+      rgba(7,8,13,0.95) 100%
+    );
+  }
+  .hero-overlay-bottom {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 80px;
+    background: linear-gradient(to top, var(--bg), transparent);
+  }
+
+  .hero-badge {
+    position: absolute;
+    top: 24px;
+    left: 32px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .live-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--rivian-green);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.85); }
+  }
+  .live-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--rivian-green);
+  }
+
+  .hero-logos {
+    position: absolute;
+    top: 50%;
+    right: 32px;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+  }
+  .logo-pill {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 0.08em;
+    color: var(--text);
+    line-height: 1;
+  }
+  .logo-pill.green { color: var(--rivian-green); border-color: rgba(110,231,183,0.3); }
+  .logo-x {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  /* ── CONTENT AREA ── */
+  .content {
+    padding: 0 32px;
+    margin-top: 32px;
+  }
+
+  /* ── HEADLINE ── */
+  .headline-block { margin-bottom: 28px; }
+  .kicker {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--rivian-green);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .kicker::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(110,231,183,0.2);
+    max-width: 60px;
+  }
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(42px, 7vw, 72px);
+    line-height: 0.96;
+    letter-spacing: 0.02em;
+    color: #fff;
+    margin-bottom: 16px;
+  }
+  h1 span { color: var(--rivian-green); }
+  .standfirst {
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.65;
+    color: var(--text2);
+    max-width: 620px;
+    border-left: 2px solid var(--rivian-green);
+    padding-left: 16px;
+  }
+
+  /* ── STAT ROW ── */
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin: 28px 0;
+  }
+  .stat {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 14px;
+    position: relative;
+    overflow: hidden;
+  }
+  .stat::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+  .stat.g::before { background: var(--rivian-green); }
+  .stat.a::before { background: var(--amber); }
+  .stat.w::before { background: #fff; }
+  .stat.b::before { background: #3b82f6; }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 34px;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .stat.g .stat-num { color: var(--rivian-green); }
+  .stat.a .stat-num { color: var(--amber); }
+  .stat.w .stat-num { color: #fff; }
+  .stat.b .stat-num { color: #93c5fd; }
+  .stat-lbl {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* ── BODY TEXT ── */
+  .body-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-bottom: 28px;
+  }
+  p {
+    font-size: 14.5px;
+    line-height: 1.75;
+    color: var(--text2);
+    margin-bottom: 14px;
+  }
+  p strong { color: var(--text); font-weight: 500; }
+  p em { color: var(--rivian-green); font-style: normal; }
+
+  /* ── TIMELINE STRIP ── */
+  .timeline-strip {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 28px;
+  }
+  .tl-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .tl-items {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    position: relative;
+  }
+  .tl-items::before {
+    content: '';
+    position: absolute;
+    top: 16px;
+    left: 8%;
+    right: 8%;
+    height: 1px;
+    background: linear-gradient(to right, var(--rivian-green), #3b82f6, var(--amber), #e11d48);
+    opacity: 0.4;
+  }
+  .tl-item { text-align: center; padding-top: 0; }
+  .tl-dot {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    margin: 9px auto 10px;
+    position: relative;
+    z-index: 1;
+    border: 2px solid;
+  }
+  .tl-item:nth-child(1) .tl-dot { background: var(--rivian-green); border-color: var(--rivian-green); }
+  .tl-item:nth-child(2) .tl-dot { background: #3b82f6; border-color: #3b82f6; }
+  .tl-item:nth-child(3) .tl-dot { background: var(--amber); border-color: var(--amber); }
+  .tl-item:nth-child(4) .tl-dot { background: #e11d48; border-color: #e11d48; }
+  .tl-year {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 0.06em;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+  .tl-event {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* ── PULLQUOTE ── */
+  .pullquote {
+    border-left: 3px solid var(--rivian-green);
+    padding: 4px 0 4px 20px;
+    margin-bottom: 28px;
+  }
+  .pullquote p {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 17px;
+    font-weight: 300;
+    line-height: 1.55;
+    color: rgba(255,255,255,0.85);
+    font-style: italic;
+    margin: 0 0 6px;
+  }
+  .pullquote cite {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--rivian-green);
+    font-style: normal;
+  }
+
+  /* ── INSIGHT BOX ── */
+  .insight-box {
+    background: linear-gradient(135deg, rgba(110,231,183,0.07), rgba(59,130,246,0.05));
+    border: 1px solid rgba(110,231,183,0.2);
+    border-radius: 10px;
+    padding: 22px 24px;
+    margin-bottom: 28px;
+  }
+  .insight-head {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--rivian-green);
+    margin-bottom: 12px;
+  }
+  .insight-box p {
+    color: rgba(255,255,255,0.78);
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+  .insight-box p:last-child { margin-bottom: 0; }
+
+  /* ── TECH SPECS ── */
+  .tech-specs {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 28px;
+  }
+  .spec-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 14px;
+  }
+  .spec-item { }
+  .spec-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .spec-val {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.4;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    margin-top: 36px;
+    padding: 20px 32px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .footer-brand {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .footer-brand strong { color: var(--rivian-green); }
+  .footer-tags {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+  }
+  .sources {
+    margin-top: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: rgba(255,255,255,0.22);
+    letter-spacing: 0.06em;
+    line-height: 2;
+  }
+
+  @media (max-width: 640px) {
+    .stat-row { grid-template-columns: repeat(2, 1fr); }
+    .body-grid { grid-template-columns: 1fr; gap: 0; }
+    .tl-items { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .tl-items::before { display: none; }
+    .spec-grid { grid-template-columns: repeat(2, 1fr); }
+    h1 { font-size: 48px; }
+    .hero-logos { right: 16px; }
+    .hero-logos .logo-pill { font-size: 18px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- BRAND BAR -->
+  <div class="brand-bar">
+    <div class="brand-left">
+      <div class="brand-icon">
+        <svg viewBox="0 0 18 18" fill="none">
+          <circle cx="9" cy="9" r="4" fill="#07080d"/>
+          <circle cx="9" cy="9" r="7.5" stroke="#07080d" stroke-width="1"/>
+          <line x1="9" y1="1" x2="9" y2="3.5" stroke="#07080d" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="9" y1="14.5" x2="9" y2="17" stroke="#07080d" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="1" y1="9" x2="3.5" y2="9" stroke="#07080d" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="14.5" y1="9" x2="17" y2="9" stroke="#07080d" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div>
+        <div class="brand-name">Itquette</div>
+        <div class="brand-sub">Autonomous Lab</div>
+      </div>
+    </div>
+    <div class="brand-date">19 March 2026 · Breaking</div>
+  </div>
+
+  <!-- HERO VISUAL -->
+  <div class="hero-visual">
+    <canvas id="hero"></canvas>
+    <div class="hero-overlay"></div>
+    <div class="hero-overlay-bottom"></div>
+
+    <div class="hero-badge">
+      <div class="live-dot"></div>
+      <span class="live-label">Breaking partnership · March 19, 2026</span>
+    </div>
+
+    <div class="hero-logos">
+      <div class="logo-pill">UBER</div>
+      <div class="logo-x">×</div>
+      <div class="logo-pill green">RIVIAN</div>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- HEADLINE -->
+    <div class="headline-block">
+      <div class="kicker">Autonomous Vehicles · Partnership</div>
+      <h1>50,000 ROBOTS<br>ON <span>UBER'S</span> ROADS</h1>
+      <p class="standfirst">Uber is investing up to $1.25 billion in Rivian to deploy 50,000 fully autonomous R2 robotaxis across 25 cities in the US, Canada, and Europe by 2031 — exclusively on the Uber platform.</p>
+    </div>
+
+    <!-- STATS -->
+    <div class="stat-row">
+      <div class="stat g">
+        <div class="stat-num">$1.25B</div>
+        <div class="stat-lbl">Uber invests<br>in Rivian</div>
+      </div>
+      <div class="stat w">
+        <div class="stat-num">50K</div>
+        <div class="stat-lbl">Rivian R2<br>robotaxis targeted</div>
+      </div>
+      <div class="stat a">
+        <div class="stat-num">25</div>
+        <div class="stat-lbl">Cities across US,<br>Canada & Europe</div>
+      </div>
+      <div class="stat b">
+        <div class="stat-num">2028</div>
+        <div class="stat-lbl">First launch<br>SF + Miami</div>
+      </div>
+    </div>
+
+    <!-- PULLQUOTE -->
+    <div class="pullquote">
+      <p>"We're big believers in Rivian's approach — designing the vehicle, compute platform, and software stack together, while maintaining end-to-end control of scaled manufacturing and supply in the US."</p>
+      <cite>Dara Khosrowshahi, CEO, Uber</cite>
+    </div>
+
+    <!-- BODY COPY -->
+    <div class="body-grid">
+      <div>
+        <p>Announced today — March 19, 2026 — this is Uber's most significant autonomous vehicle investment to date. <strong>An initial $300 million</strong> lands immediately, with four further tranches tied to Rivian hitting specific autonomy milestones through 2031. The full $1.25 billion only flows if Rivian delivers.</p>
+        <p>The first phase deploys <strong>10,000 fully autonomous R2 SUVs</strong> in San Francisco and Miami in 2028. If milestones are met, Uber holds an option to purchase up to <em>40,000 additional vehicles</em> starting 2030 — bringing the total fleet to 50,000. Every single vehicle will be <strong>exclusively available through Uber's app.</strong></p>
+      </div>
+      <div>
+        <p>What makes this deal structurally different from Uber's other AV partnerships is that <strong>Uber is buying the vehicles itself</strong> — not just distributing another company's fleet. This marks a deliberate shift from pure marketplace to partial fleet ownership, taking on both asset and operational risk directly.</p>
+        <p>Rivian CEO RJ Scaringe has called autonomy the company's single biggest investment area. At SXSW 2026 last week, he said: <em>"The rate of progress over the next five years will be so different that the past is not a good predictor of the future."</em> The R2 consumer vehicle begins production this spring — the robotaxi variant follows.</p>
+      </div>
+    </div>
+
+    <!-- TIMELINE -->
+    <div class="timeline-strip">
+      <div class="tl-label">Deployment roadmap</div>
+      <div class="tl-items">
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-year">NOW</div>
+          <div class="tl-event">$300M initial<br>Uber investment</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-year">2026</div>
+          <div class="tl-event">Rivian R2 consumer<br>production begins</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-year">2028</div>
+          <div class="tl-event">10K robotaxis<br>SF + Miami launch</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-year">2031</div>
+          <div class="tl-event">50K vehicles<br>25 cities globally</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TECH SPECS -->
+    <div class="tech-specs">
+      <div class="tl-label">Rivian R2 autonomy platform — what's under the hood</div>
+      <div class="spec-grid">
+        <div class="spec-item">
+          <div class="spec-label">Cameras</div>
+          <div class="spec-val">11 cameras<br>65 megapixels total</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">Sensors</div>
+          <div class="spec-val">5 radars + 1 LiDAR<br>Multi-modal perception</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">Compute</div>
+          <div class="spec-val">2× RAP1 chips<br>1,600 TOPS AI compute</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">AI strategy</div>
+          <div class="spec-val">Large language models<br>End-to-end Physical AI</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">Data flywheel</div>
+          <div class="spec-val">3D LiDAR point clouds<br>from consumer fleet</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">Target level</div>
+          <div class="spec-val">Level 4 autonomy<br>Hands-off, eyes-off</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INSIGHT BOX -->
+    <div class="insight-box">
+      <div class="insight-head">Itquette Autonomous Lab · Insight</div>
+      <p><strong>Why this deal is different.</strong> Every previous Uber AV partnership kept Uber as a pure marketplace — the AV company owned and operated its vehicles, Uber just provided riders. With Rivian (and Lucid before it), Uber is buying the assets. That shifts the risk profile significantly — depreciation, utilisation rates, and incident liability now fall partly on Uber's balance sheet.</p>
+      <p><strong>The exclusive clause is the real story.</strong> Rivian R2 robotaxis will be available <em>exclusively through Uber</em>. That is not just a distribution deal — it is a moat. No Lyft. No Waymo app. No direct consumer booking. Uber is not just the platform layer; it is becoming the only door through which a 50,000-vehicle fleet enters the market.</p>
+      <p><strong>The milestone structure protects Uber.</strong> The $1.25B only fully flows if Rivian delivers on autonomy targets by specific dates. This is Uber funding Rivian's R&D while retaining the right to walk away if progress stalls. Smart capital deployment — or a sign that internal confidence in the timeline is measured.</p>
+    </div>
+
+  </div><!-- end content -->
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div>
+      <div class="footer-brand"><strong>Itquette Autonomous Lab</strong> · Intelligence in Motion · © 2026</div>
+      <div class="sources">
+        Sources: Rivian / Uber press release (Mar 19, 2026) · CNBC · TechCrunch · Fortune · Electrek · TheStreet · Engadget
+      </div>
+    </div>
+    <div class="footer-tags">#ItquetteAutonomousLab #Rivian #Uber #Robotaxi #AutonomousVehicles</div>
+  </div>
+
+</div><!-- end page -->
+
+<!-- 3D HERO CANVAS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const canvas = document.getElementById('hero');
+const container = canvas.parentElement;
+const W = container.offsetWidth || 900;
+const H = 340;
+canvas.width = W;
+canvas.height = H;
+
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+renderer.setSize(W, H);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.shadowMap.enabled = true;
+renderer.setClearColor(0x07080d, 1);
+
+const scene = new THREE.Scene();
+scene.fog = new THREE.FogExp2(0x07080d, 0.055);
+
+const camera = new THREE.PerspectiveCamera(45, W / H, 0.1, 100);
+camera.position.set(-6, 3.5, 10);
+camera.lookAt(0, 0.5, 0);
+
+scene.add(new THREE.AmbientLight(0x0a1020, 2));
+
+const keyLight = new THREE.DirectionalLight(0x6ee7b7, 2.5);
+keyLight.position.set(-4, 6, 4);
+keyLight.castShadow = true;
+scene.add(keyLight);
+
+const fillLight = new THREE.DirectionalLight(0x3b82f6, 1.2);
+fillLight.position.set(6, 2, -3);
+scene.add(fillLight);
+
+const rimLight = new THREE.PointLight(0x6ee7b7, 4, 12);
+rimLight.position.set(0, 5, -6);
+scene.add(rimLight);
+
+const groundLight = new THREE.PointLight(0x1a1a3a, 3, 8);
+groundLight.position.set(0, -1, 0);
+scene.add(groundLight);
+
+const floorGeo = new THREE.PlaneGeometry(40, 40);
+const floorMat = new THREE.MeshStandardMaterial({
+  color: 0x080a12, metalness: 0.8, roughness: 0.3
+});
+const floor = new THREE.Mesh(floorGeo, floorMat);
+floor.rotation.x = -Math.PI / 2;
+floor.position.y = -0.9;
+floor.receiveShadow = true;
+scene.add(floor);
+
+function makeMat(col, emissive = 0x000000, rough = 0.25, metal = 0.85) {
+  return new THREE.MeshStandardMaterial({ color: col, emissive, emissiveIntensity: 0.3, roughness: rough, metalness: metal });
+}
+
+const bodyMat = makeMat(0x0d1117, 0x0d1117, 0.15, 0.95);
+const glassMat = new THREE.MeshStandardMaterial({ color: 0x6ee7b7, emissive: 0x6ee7b7, emissiveIntensity: 0.15, roughness: 0.05, metalness: 0.1, transparent: true, opacity: 0.35 });
+const trimMat = makeMat(0x6ee7b7, 0x6ee7b7, 0.4, 0.3);
+const wheelMat = makeMat(0x111827, 0x000000, 0.8, 0.2);
+const rimMat = makeMat(0x9ca3af, 0x6ee7b7, 0.2, 0.9);
+const lightMat = new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0x6ee7b7, emissiveIntensity: 3, roughness: 0.1, metalness: 0.1 });
+const lightRedMat = new THREE.MeshStandardMaterial({ color: 0xff2244, emissive: 0xff2244, emissiveIntensity: 2.5, roughness: 0.1, metalness: 0.1 });
+const darkMat = makeMat(0x050709, 0x000000, 0.9, 0.1);
+
+const car = new THREE.Group();
+
+const bodyGeo = new THREE.BoxGeometry(4.2, 0.8, 1.9);
+const body = new THREE.Mesh(bodyGeo, bodyMat);
+body.position.y = 0.1;
+body.castShadow = true;
+car.add(body);
+
+const cabGeo = new THREE.BoxGeometry(2.4, 0.75, 1.75);
+const cab = new THREE.Mesh(cabGeo, bodyMat);
+cab.position.set(-0.1, 0.775, 0);
+cab.castShadow = true;
+car.add(cab);
+
+const windGeo = new THREE.BoxGeometry(0.08, 0.62, 1.6);
+const windshield = new THREE.Mesh(windGeo, glassMat);
+windshield.position.set(1.08, 0.82, 0);
+car.add(windshield);
+
+const rearGlassGeo = new THREE.BoxGeometry(0.08, 0.55, 1.6);
+const rearGlass = new THREE.Mesh(rearGlassGeo, glassMat);
+rearGlass.position.set(-1.24, 0.85, 0);
+car.add(rearGlass);
+
+const sideGlassGeo = new THREE.BoxGeometry(2.0, 0.48, 0.06);
+[[0, 0.88, 0.875], [0, 0.88, -0.875]].forEach(pos => {
+  const sg = new THREE.Mesh(sideGlassGeo, glassMat);
+  sg.position.set(...pos);
+  car.add(sg);
+});
+
+const roofGeo = new THREE.BoxGeometry(2.2, 0.08, 1.72);
+const roof = new THREE.Mesh(roofGeo, makeMat(0x111827, 0x6ee7b7, 0.3, 0.8));
+roof.position.set(-0.1, 1.19, 0);
+car.add(roof);
+
+const frontLightGeo = new THREE.BoxGeometry(0.12, 0.12, 0.6);
+[[-0.55], [0.55]].forEach(([z]) => {
+  const fl = new THREE.Mesh(frontLightGeo, lightMat);
+  fl.position.set(2.12, 0.14, z);
+  car.add(fl);
+});
+
+const grillGeo = new THREE.BoxGeometry(0.06, 0.35, 1.5);
+const grill = new THREE.Mesh(grillGeo, trimMat);
+grill.position.set(2.12, 0.05, 0);
+car.add(grill);
+
+const rearLightGeo = new THREE.BoxGeometry(0.1, 0.12, 1.2);
+const rearLight = new THREE.Mesh(rearLightGeo, lightRedMat);
+rearLight.position.set(-2.12, 0.14, 0);
+car.add(rearLight);
+
+const skirtGeo = new THREE.BoxGeometry(3.8, 0.14, 2.0);
+const skirt = new THREE.Mesh(skirtGeo, makeMat(0x1a1a2e, 0x6ee7b7, 0.6, 0.3));
+skirt.position.y = -0.27;
+car.add(skirt);
+
+const uvLine = new THREE.Mesh(
+  new THREE.BoxGeometry(3.6, 0.04, 0.04),
+  new THREE.MeshStandardMaterial({ color: 0x6ee7b7, emissive: 0x6ee7b7, emissiveIntensity: 2 })
+);
+uvLine.position.set(0, -0.19, 0.98);
+car.add(uvLine);
+const uvLine2 = uvLine.clone();
+uvLine2.position.z = -0.98;
+car.add(uvLine2);
+
+const wheelPositions = [
+  [1.35, -0.42, 1.06],
+  [1.35, -0.42, -1.06],
+  [-1.35, -0.42, 1.06],
+  [-1.35, -0.42, -1.06],
+];
+wheelPositions.forEach(pos => {
+  const wg = new THREE.CylinderGeometry(0.42, 0.42, 0.28, 24);
+  const w = new THREE.Mesh(wg, wheelMat);
+  w.rotation.z = Math.PI / 2;
+  w.position.set(...pos);
+  w.castShadow = true;
+  car.add(w);
+
+  const rg = new THREE.CylinderGeometry(0.26, 0.26, 0.3, 16);
+  const r = new THREE.Mesh(rg, rimMat);
+  r.rotation.z = Math.PI / 2;
+  r.position.set(...pos);
+  car.add(r);
+
+  const hubGeo = new THREE.CylinderGeometry(0.08, 0.08, 0.32, 8);
+  const hub = new THREE.Mesh(hubGeo, new THREE.MeshStandardMaterial({ color: 0x6ee7b7, emissive: 0x6ee7b7, emissiveIntensity: 1.5, roughness: 0.2 }));
+  hub.rotation.z = Math.PI / 2;
+  hub.position.set(...pos);
+  car.add(hub);
+});
+
+const sensorBar = new THREE.Mesh(
+  new THREE.BoxGeometry(0.5, 0.1, 0.1),
+  new THREE.MeshStandardMaterial({ color: 0x6ee7b7, emissive: 0x6ee7b7, emissiveIntensity: 1.5 })
+);
+sensorBar.position.set(0, 1.26, 0);
+car.add(sensorBar);
+
+car.position.set(0.5, 0, 0);
+scene.add(car);
+
+const scanRings = [];
+for (let i = 0; i < 3; i++) {
+  const rg = new THREE.Mesh(
+    new THREE.TorusGeometry(1.2 + i * 0.7, 0.015, 8, 48),
+    new THREE.MeshStandardMaterial({
+      color: 0x6ee7b7, emissive: 0x6ee7b7, emissiveIntensity: 1,
+      transparent: true, opacity: 0.4 - i * 0.1
+    })
+  );
+  rg.rotation.x = Math.PI / 2;
+  rg.position.set(0.5, 1.28, 0);
+  rg.userData.delay = i * 0.6;
+  scene.add(rg);
+  scanRings.push(rg);
+}
+
+const particleCount = 80;
+const pGeo = new THREE.BufferGeometry();
+const pPos = new Float32Array(particleCount * 3);
+for (let i = 0; i < particleCount; i++) {
+  pPos[i * 3] = (Math.random() - 0.5) * 18;
+  pPos[i * 3 + 1] = Math.random() * 4;
+  pPos[i * 3 + 2] = (Math.random() - 0.5) * 8;
+}
+pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+const pMat = new THREE.PointsMaterial({ color: 0x6ee7b7, size: 0.04, transparent: true, opacity: 0.5 });
+scene.add(new THREE.Points(pGeo, pMat));
+
+let t = 0;
+function animate() {
+  requestAnimationFrame(animate);
+  t += 0.012;
+
+  car.rotation.y = Math.sin(t * 0.25) * 0.08;
+  car.position.y = Math.sin(t * 0.5) * 0.04;
+
+  scanRings.forEach((r, i) => {
+    const phase = (t + r.userData.delay) % 2.5;
+    r.scale.setScalar(0.3 + phase * 0.6);
+    r.material.opacity = Math.max(0, 0.5 - phase * 0.2);
+  });
+
+  rimLight.intensity = 3.5 + Math.sin(t * 0.8) * 0.8;
+  keyLight.intensity = 2.2 + Math.sin(t * 0.6) * 0.4;
+
+  renderer.render(scene, camera);
+}
+animate();
+</script>
+
+</body>
+</html>
