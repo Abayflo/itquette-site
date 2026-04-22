@@ -491,7 +491,18 @@ footer {
   <div class="contact-grid">
 
     <div class="contact-form">
-      <form action="mailto:info@itquette.com" method="POST" enctype="text/plain">
+      <!-- 
+        SETUP: Replace YOUR_FORM_ID below with your Formspree form ID.
+        Sign up free at https://formspree.io → New Form → copy the ID from your form's endpoint URL.
+        Example: if your endpoint is https://formspree.io/f/xpwzlkqr, your ID is xpwzlkqr
+      -->
+      <div id="form-success" style="display:none; background:#f0f7f4; border:1px solid #1a5c3a; border-left:3px solid #1a5c3a; padding:18px 20px; margin-bottom:20px;">
+        <p style="color:#1a5c3a; margin:0; font-size:14px; font-weight:500;">✓ Message sent. We will be in touch if there is a genuine connection to our work.</p>
+      </div>
+      <div id="form-error" style="display:none; background:#fff5f5; border:1px solid #c0392b; border-left:3px solid #c0392b; padding:18px 20px; margin-bottom:20px;">
+        <p style="color:#c0392b; margin:0; font-size:14px;">Something went wrong. Please email us directly at info@itquette.com</p>
+      </div>
+      <form id="contact-form" action="https://formspree.io/f/mojykpee" method="POST">
         <div class="form-group">
           <label for="name">Your name</label>
           <input type="text" id="name" name="name" placeholder="Name">
@@ -516,8 +527,45 @@ footer {
           <label for="message">What prompted you to reach out</label>
           <textarea id="message" name="message" placeholder="Share what you are working through or what in our research connected with you. There is no wrong answer here."></textarea>
         </div>
-        <button type="submit" class="form-submit">Send message →</button>
+        <button type="submit" class="form-submit" id="submit-btn">Send message →</button>
       </form>
+
+      <script>
+        const form = document.getElementById('contact-form');
+        const successMsg = document.getElementById('form-success');
+        const errorMsg = document.getElementById('form-error');
+        const submitBtn = document.getElementById('submit-btn');
+
+        form.addEventListener('submit', async function(e) {
+          e.preventDefault();
+          submitBtn.textContent = 'Sending…';
+          submitBtn.disabled = true;
+          successMsg.style.display = 'none';
+          errorMsg.style.display = 'none';
+
+          try {
+            const response = await fetch(form.action, {
+              method: 'POST',
+              body: new FormData(form),
+              headers: { 'Accept': 'application/json' }
+            });
+
+            if (response.ok) {
+              form.reset();
+              form.style.display = 'none';
+              successMsg.style.display = 'block';
+            } else {
+              errorMsg.style.display = 'block';
+              submitBtn.textContent = 'Send message →';
+              submitBtn.disabled = false;
+            }
+          } catch (err) {
+            errorMsg.style.display = 'block';
+            submitBtn.textContent = 'Send message →';
+            submitBtn.disabled = false;
+          }
+        });
+      </script>
     </div>
 
     <div class="contact-info">
