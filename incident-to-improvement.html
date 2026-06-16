@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Incident-to-Improvement Framework™ — ITquette Autonomous Lab</title>
+<meta name="description" content="Demonstrating safety improvement in complex autonomous systems. Framework #3 in the ITquette Framework Series.">
+
+<!-- Open Graph -->
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://itquette.com/incident-to-improvement.html">
+<meta property="og:title" content="The Incident-to-Improvement Framework™ — Demonstrating Safety Improvement in Complex Autonomous Systems">
+<meta property="og:description" content="A fix can be deployed. A test can be passed. Yet the underlying risk may remain unchanged. Framework #3 explores how organizations move from corrective action to demonstrated risk reduction.">
+<meta property="og:image" content="https://itquette.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="ITquette Autonomous Lab">
+<meta property="article:published_time" content="2026-06-15">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap');
+
+:root {
+  --bg: #f5f4f0;
+  --paper: #faf9f7;
+  --ink: #0c0c0f;
+  --accent: #0c3547;
+  --gold: #b8952a;
+  --gold-light: #d4ac3a;
+  --muted: #6a6760;
+  --rule: #e0ddd8;
+  --surface: #ffffff;
+  --surface2: #f0ede8;
+  --max: 860px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--ink); font-family: 'DM Sans', sans-serif; font-size: 15px; line-height: 1.75; }
+
+/* NAV */
+nav { background: var(--accent); padding: 0 32px; display: flex; align-items: center; justify-content: space-between; height: 60px; position: sticky; top: 0; z-index: 100; }
+.nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.nav-mark { width: 30px; height: 30px; border: 1.5px solid var(--gold); border-radius: 4px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.nav-name { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 600; color: #fff; letter-spacing: 0.03em; line-height: 1; }
+.nav-sub { font-family: 'DM Mono', monospace; font-size: 7.5px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--gold-light); margin-top: 2px; opacity: 0.82; }
+.nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
+.nav-links a { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.55); text-decoration: none; transition: color 0.15s; }
+.nav-links a:hover, .nav-links a.active { color: #fff; }
+.gold-bar { height: 2px; background: var(--gold); }
+
+/* HERO */
+.article-hero { background: var(--accent); padding: 64px 32px 56px; }
+.article-hero-inner { max-width: var(--max); margin: 0 auto; }
+.series-badge { display: inline-flex; align-items: center; gap: 8px; font-family: 'DM Mono', monospace; font-size: 8.5px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold-light); border: 1px solid rgba(184,149,42,0.35); padding: 5px 10px; margin-bottom: 28px; }
+.series-badge span { color: rgba(255,255,255,0.35); }
+.article-hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(32px, 5vw, 52px); font-weight: 600; line-height: 1.07; color: #fff; letter-spacing: -0.01em; margin-bottom: 10px; max-width: 720px; }
+.article-hero h1 em { font-style: italic; color: var(--gold-light); }
+.article-subtitle { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-style: italic; color: rgba(255,255,255,0.52); margin-bottom: 36px; max-width: 600px; line-height: 1.5; }
+.article-meta { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+.meta-item { font-family: 'DM Mono', monospace; font-size: 8.5px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.38); }
+.meta-dot { color: rgba(255,255,255,0.18); }
+
+/* MAIN */
+main { max-width: var(--max); margin: 0 auto; padding: 56px 32px 80px; }
+
+h2 { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 600; color: var(--accent); line-height: 1.2; margin-bottom: 16px; margin-top: 52px; }
+h3 { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.3; margin-bottom: 10px; }
+p { margin-bottom: 16px; color: var(--muted); font-size: 14.5px; }
+p strong { color: var(--ink); font-weight: 500; }
+
+.standfirst { font-size: 17px; font-weight: 300; line-height: 1.7; color: #3a3834; border-left: 2px solid var(--gold); padding-left: 18px; margin-bottom: 40px; max-width: 660px; }
+.section-divider { border: none; border-top: 1px solid var(--rule); margin: 48px 0; }
+
+.dark-strip { background: var(--accent); border-left: 3px solid var(--gold); padding: 22px 26px; margin: 36px 0; }
+.dark-strip p { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-style: italic; color: rgba(255,255,255,0.88); line-height: 1.6; margin: 0; }
+.dark-strip p strong { font-style: normal; color: var(--gold-light); font-weight: 600; }
+
+.highlight-box { background: var(--surface2); border: 1px solid var(--rule); border-left: 3px solid var(--gold); padding: 24px 26px; margin: 32px 0; }
+.highlight-box .hb-label { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+.highlight-box p { font-size: 14px; margin-bottom: 8px; }
+.highlight-box p:last-child { margin-bottom: 0; }
+
+/* PIPELINE DIAGRAM */
+.pipeline-wrap { background: var(--surface); border: 1px solid var(--rule); padding: 40px 32px 36px; margin: 36px 0; }
+.pipeline-label { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--muted); margin-bottom: 32px; }
+
+/* SIX STAGES GRID */
+.stages-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: var(--rule); border: 1px solid var(--rule); margin: 36px 0; }
+.stage-card { background: var(--surface); padding: 24px 20px; position: relative; }
+.stage-card.active { background: var(--accent); }
+.stage-card.warn { background: var(--surface2); border-bottom: 3px solid var(--gold); }
+.stage-num { font-family: 'Cormorant Garamond', serif; font-size: 42px; font-weight: 700; color: var(--rule); line-height: 0.9; margin-bottom: 12px; }
+.stage-card.active .stage-num { color: rgba(255,255,255,0.1); }
+.stage-type { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+.stage-card.active .stage-type { color: var(--gold-light); opacity: 0.7; }
+.stage-title { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 600; color: var(--accent); line-height: 1.25; margin-bottom: 10px; }
+.stage-card.active .stage-title { color: #fff; }
+.stage-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+.stage-card.active .stage-desc { color: rgba(255,255,255,0.55); }
+.stage-question { font-family: 'Cormorant Garamond', serif; font-size: 13px; font-style: italic; color: var(--muted); margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--rule); }
+.stage-card.active .stage-question { color: rgba(255,255,255,0.45); border-top-color: rgba(255,255,255,0.1); }
+
+/* VALIDATION TRAP CALLOUT */
+.trap-box { background: #fdf6ec; border: 1px solid #ecd9b4; border-left: 3px solid var(--gold); padding: 24px 26px; margin: 28px 0; }
+.trap-box .tb-label { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 0.22em; text-transform: uppercase; color: #9a7320; margin-bottom: 14px; }
+.trap-flow { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+.trap-step { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.05em; color: var(--ink); background: #ffffff; border: 1px solid #ecd9b4; padding: 6px 12px; border-radius: 3px; }
+.trap-arrow { color: #b8952a; font-size: 13px; }
+.trap-box p { font-size: 14px; margin-bottom: 0; }
+
+/* COMPARISON: Claims */
+.compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: var(--rule); border: 1px solid var(--rule); margin: 32px 0; }
+.compare-cell { background: var(--surface); padding: 22px 20px; }
+.compare-cell.dim { background: var(--surface2); }
+.cc-label { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+.cc-event { font-family: 'Cormorant Garamond', serif; font-size: 16px; font-style: italic; color: var(--muted); line-height: 1.5; }
+.cc-event.better { color: var(--accent); font-weight: 600; }
+
+/* BRIDGE TO SERIES */
+.bridge-box { background: var(--surface2); border: 1px solid var(--rule); border-left: 3px solid var(--accent); padding: 24px 26px; margin: 32px 0; }
+.bridge-box .bb-label { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+.bridge-box p { font-size: 14px; margin-bottom: 8px; }
+.bridge-box p:last-child { margin-bottom: 0; }
+
+/* QUESTIONS */
+.questions-block { background: var(--accent); padding: 36px 32px; margin: 36px 0; }
+.questions-block .q-label { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--gold-light); opacity: 0.7; margin-bottom: 22px; }
+.questions-block ol { list-style: none; counter-reset: q; }
+.questions-block ol li { counter-increment: q; display: flex; gap: 16px; margin-bottom: 20px; align-items: flex-start; }
+.questions-block ol li:last-child { margin-bottom: 0; }
+.questions-block ol li::before { content: counter(q); font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 600; color: var(--gold); opacity: 0.5; flex-shrink: 0; line-height: 1.3; min-width: 20px; }
+.questions-block ol li p { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-style: italic; color: rgba(255,255,255,0.78); line-height: 1.55; margin: 0; }
+
+/* TAGS */
+.tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 12px; }
+.tag { font-family: 'DM Mono', monospace; font-size: 8.5px; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 7px; border: 1px solid var(--rule); color: var(--muted); border-radius: 2px; }
+
+/* SERIES NAV */
+.series-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: var(--rule); border: 1px solid var(--rule); margin: 48px 0 0; }
+.series-nav-cell { background: var(--surface); padding: 22px 24px; text-decoration: none; display: block; }
+.series-nav-cell:hover { background: var(--surface2); }
+.snc-label { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+.snc-title { font-family: 'Cormorant Garamond', serif; font-size: 16px; font-weight: 600; color: var(--accent); line-height: 1.3; }
+
+/* CTA */
+.cta-strip { background: var(--accent); padding: 32px 36px; margin-top: 2px; display: flex; align-items: center; justify-content: space-between; gap: 32px; flex-wrap: wrap; }
+.cta-strip h3 { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 600; font-style: italic; color: #fff; margin-bottom: 6px; }
+.cta-strip p { color: rgba(255,255,255,0.48); font-size: 13px; margin: 0; }
+.cta-link { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-light); text-decoration: none; border: 1px solid rgba(184,149,42,0.4); padding: 10px 18px; white-space: nowrap; flex-shrink: 0; }
+.cta-link:hover { background: rgba(184,149,42,0.1); }
+
+/* FOOTER */
+footer { background: var(--accent); padding: 20px 32px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+.footer-name { font-family: 'Cormorant Garamond', serif; font-size: 15px; font-weight: 600; color: #fff; }
+.footer-sub { font-family: 'DM Mono', monospace; font-size: 7.5px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold-light); opacity: 0.8; margin-top: 2px; }
+.footer-links { display: flex; gap: 20px; list-style: none; }
+.footer-links a { font-family: 'DM Mono', monospace; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.42); text-decoration: none; }
+.footer-links a:hover { color: rgba(255,255,255,0.75); }
+.footer-copy { font-family: 'DM Mono', monospace; font-size: 9px; color: rgba(255,255,255,0.28); letter-spacing: 0.08em; }
+
+@media (max-width: 640px) {
+  nav { padding: 0 18px; }
+  .article-hero { padding: 40px 18px 40px; }
+  main { padding: 40px 18px 60px; }
+  .stages-grid, .compare-grid, .series-nav { grid-template-columns: 1fr; }
+  .cta-strip { flex-direction: column; align-items: flex-start; }
+  footer { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-brand">
+    <div class="nav-mark">
+      <svg width="18" height="18" viewBox="0 0 22 22" fill="none">
+        <circle cx="11" cy="11" r="4.5" fill="none" stroke="#b8952a" stroke-width="1.4"/>
+        <circle cx="11" cy="11" r="9.5" fill="none" stroke="#b8952a" stroke-width="0.9"/>
+        <line x1="11" y1="1" x2="11" y2="4" stroke="#b8952a" stroke-width="1.4" stroke-linecap="round"/>
+        <line x1="11" y1="18" x2="11" y2="21" stroke="#b8952a" stroke-width="1.4" stroke-linecap="round"/>
+        <line x1="1" y1="11" x2="4" y2="11" stroke="#b8952a" stroke-width="1.4" stroke-linecap="round"/>
+        <line x1="18" y1="11" x2="21" y2="11" stroke="#b8952a" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div>
+      <div class="nav-name">ITquette</div>
+      <div class="nav-sub">Autonomous Lab</div>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="insights.html" class="active">Insights</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</nav>
+<div class="gold-bar"></div>
+
+<!-- HERO -->
+<div class="article-hero">
+  <div class="article-hero-inner">
+    <div class="series-badge">ITquette Framework Series <span>·</span> Framework #3</div>
+    <h1>The Incident-to-Improvement<br><em>Framework™</em></h1>
+    <div class="article-subtitle">Demonstrating safety improvement in complex autonomous systems.</div>
+    <div class="article-meta">
+      <span class="meta-item">June 2026</span>
+      <span class="meta-dot">·</span>
+      <span class="meta-item">ITquette Autonomous Lab</span>
+      <span class="meta-dot">·</span>
+      <span class="meta-item">Framework · Risk reduction evidence</span>
+    </div>
+  </div>
+</div>
+
+<main>
+
+  <p class="standfirst">Organisations respond quickly when incidents occur. Investigations are launched, fixes are implemented, validation is completed, and the incident is closed. But one question often goes unanswered: did safety actually improve — or was a problem simply addressed?</p>
+
+  <hr class="section-divider">
+
+  <!-- OPENING -->
+  <p>Many organisations are effective at identifying problems. Many are effective at implementing solutions. Far fewer can confidently demonstrate that the implemented solution reduced operational risk over time.</p>
+
+  <div class="dark-strip">
+    <p>A fix can be deployed. A test can be passed. <strong>Yet the underlying risk may remain unchanged.</strong></p>
+  </div>
+
+  <p>For organisations operating safety-critical systems at scale, that distinction is not a technicality. It is the difference between believing safety improved and being able to prove it. This is the basis of the <strong>Incident-to-Improvement Framework™</strong>.</p>
+
+  <hr class="section-divider">
+
+  <!-- PIPELINE -->
+  <h2>Six stages from incident to evidence</h2>
+
+  <p>The framework traces a single thread from the moment something goes wrong to the point where an organisation can responsibly say the risk has been reduced — not just addressed.</p>
+
+  <div class="pipeline-wrap">
+    <div class="pipeline-label">The Incident-to-Improvement Framework™ — Pipeline</div>
+    <svg width="100%" viewBox="0 0 780 110" xmlns="http://www.w3.org/2000/svg" style="display:block; margin-bottom:8px;">
+      <!-- 1 -->
+      <rect x="0" y="20" width="110" height="70" rx="4" fill="#0c3547"/>
+      <text x="55" y="48" font-family="'DM Mono',monospace,Arial" font-size="8" fill="#b8952a" text-anchor="middle" letter-spacing="1">STAGE 01</text>
+      <text x="55" y="70" font-family="'Cormorant Garamond',Georgia,serif" font-size="14" font-weight="600" fill="#ffffff" text-anchor="middle">Incident</text>
+      <polygon points="114,55 124,49 124,61" fill="#e0ddd8"/>
+      <!-- 2 -->
+      <rect x="128" y="20" width="110" height="70" rx="4" fill="#f0ede8" stroke="#e0ddd8" stroke-width="1"/>
+      <text x="183" y="48" font-family="'DM Mono',monospace,Arial" font-size="8" fill="#b8952a" text-anchor="middle" letter-spacing="1">STAGE 02</text>
+      <text x="183" y="70" font-family="'Cormorant Garamond',Georgia,serif" font-size="14" font-weight="600" fill="#0c3547" text-anchor="middle">Investigation</text>
+      <polygon points="242,55 252,49 252,61" fill="#e0ddd8"/>
+      <!-- 3 -->
+      <rect x="256" y="20" width="110" height="70" rx="4" fill="#f0ede8" stroke="#e0ddd8" stroke-width="1"/>
+      <text x="311" y="48" font-family="'DM Mono',monospace,Arial" font-size="8" fill="#b8952a" text-anchor="middle" letter-spacing="1">STAGE 03</text>
+      <text x="311" y="65" font-family="'Cormorant Garamond',Georgia,serif" font-size="13" font-weight="600" fill="#0c3547" text-anchor="middle">Corrective</text>
+      <text x="311" y="80" font-family="'Cormorant Garamond',Georgia,serif" font-size="13" font-weight="600" fill="#0c3547" text-anchor="middle">Action</text>
+      <polygon points="370,55 380,49 380,61" fill="#e0ddd8"/>
+      <!-- 4 — validation, flagged amber -->
+      <rect x="384" y="20" width="110" height="70" rx="4" fill="#fdf6ec" stroke="#ecd9b4" stroke-width="1.5"/>
+      <text x="439" y="48" font-family="'DM Mono',monospace,Arial" font-size="8" fill="#9a7320" text-anchor="middle" letter-spacing="1">STAGE 04</text>
+      <text x="439" y="70" font-family="'Cormorant Garamond',Georgia,serif" font-size="14" font-weight="600" fill="#5a3d00" text-anchor="middle">Validation</text>
+      <polygon points="498,55 508,49 508,61" fill="#e0ddd8"/>
+      <!-- 5 -->
+      <rect x="512" y="20" width="110" height="70" rx="4" fill="#f0ede8" stroke="#e0ddd8" stroke-width="1"/>
+      <text x="567" y="48" font-family="'DM Mono',monospace,Arial" font-size="8" fill="#b8952a" text-anchor="middle" letter-spacing="1">STAGE 05</text>
+      <text x="567" y="65" font-family="'Cormorant Garamond',Georgia,serif" font-size="13" font-weight="600" fill="#0c3547" text-anchor="middle">Safety</text>
+      <text x="567" y="80" font-family="'Cormorant Garamond',Georgia,serif" font-size="13" font-weight="600" fill="#0c3547" text-anchor="middle">Evidence</text>
+      <polygon points="626,55 636,49 636,61" fill="#e0ddd8"/>
+      <!-- 6 -->
+      <rect x="640" y="20" width="140" height="70" rx="4" fill="#b8952a"/>
+      <text x="710" y="48" font-family="'DM Mono',monospace,Arial" font-size="8" fill="rgba(255,255,255,0.7)" text-anchor="middle" letter-spacing="1">STAGE 06</text>
+      <text x="710" y="65" font-family="'Cormorant Garamond',Georgia,serif" font-size="13" font-weight="600" fill="#ffffff" text-anchor="middle">Risk</text>
+      <text x="710" y="80" font-family="'Cormorant Garamond',Georgia,serif" font-size="13" font-weight="600" fill="#ffffff" text-anchor="middle">Reduction</text>
+
+      <text x="55" y="104" font-family="Arial,sans-serif" font-size="7.5" fill="#6a6760" text-anchor="middle" font-style="italic">Awareness begins</text>
+      <text x="439" y="104" font-family="Arial,sans-serif" font-size="7.5" fill="#9a7320" text-anchor="middle" font-style="italic">The trap lives here</text>
+      <text x="710" y="104" font-family="Arial,sans-serif" font-size="7.5" fill="#b8952a" text-anchor="middle" font-style="italic">The goal</text>
+    </svg>
+  </div>
+
+  <div class="stages-grid">
+
+    <div class="stage-card active">
+      <div class="stage-num">01</div>
+      <div class="stage-type">Awareness begins</div>
+      <div class="stage-title">Incident</div>
+      <div class="stage-desc">A collision, near miss, disengagement, intervention, or unexpected vehicle behaviour. The organisation becomes aware of a potential problem — but awareness alone does not create understanding.</div>
+      <div class="stage-question">Something happened. What was it?</div>
+    </div>
+
+    <div class="stage-card">
+      <div class="stage-num">02</div>
+      <div class="stage-type">Understanding why</div>
+      <div class="stage-title">Investigation</div>
+      <div class="stage-desc">The purpose isn't only to determine what happened, but why. What conditions existed, what scenario was encountered, what contributing factors were present. Without this, organisations collect incidents rather than knowledge.</div>
+      <div class="stage-question">Why did it happen?</div>
+    </div>
+
+    <div class="stage-card">
+      <div class="stage-num">03</div>
+      <div class="stage-type">Intended fix</div>
+      <div class="stage-title">Corrective Action</div>
+      <div class="stage-desc">Software changes, model retraining, policy updates, ODD adjustments, additional safeguards. The organisation has created an intended improvement — the key word being intended. Nothing is proven yet.</div>
+      <div class="stage-question">What are we changing?</div>
+    </div>
+
+    <div class="stage-card warn">
+      <div class="stage-num">04</div>
+      <div class="stage-type">Where confidence is mistaken for evidence</div>
+      <div class="stage-title">Validation</div>
+      <div class="stage-desc">Simulation, replay testing, closed-course testing, controlled deployment. A successful validation shows the fix behaves as intended. It does not yet show that operational risk has actually decreased.</div>
+      <div class="stage-question">Did the fix perform as expected?</div>
+    </div>
+
+    <div class="stage-card">
+      <div class="stage-num">05</div>
+      <div class="stage-type">Where it becomes measurable</div>
+      <div class="stage-title">Safety Evidence</div>
+      <div class="stage-desc">Has recurrence decreased? Has exposure decreased? Are trend indicators moving in the right direction? This stage shifts the claim from "the fix works" to "the risk appears lower."</div>
+      <div class="stage-question">Is the risk actually changing?</div>
+    </div>
+
+    <div class="stage-card">
+      <div class="stage-num">06</div>
+      <div class="stage-type">The goal</div>
+      <div class="stage-title">Risk Reduction</div>
+      <div class="stage-desc">Not "the problem is solved" — but "the likelihood of this risk causing harm has been reduced." Safety-critical systems rarely eliminate risk entirely. The goal is managing it through continuous, demonstrated improvement.</div>
+      <div class="stage-question">Has risk measurably gone down?</div>
+    </div>
+
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- THE VALIDATION TRAP -->
+  <h2>The validation trap</h2>
+
+  <p>Many improvement efforts stop at Stage 4. The logic feels complete:</p>
+
+  <div class="trap-box">
+    <div class="tb-label">The trap</div>
+    <div class="trap-flow">
+      <span class="trap-step">Problem found</span>
+      <span class="trap-arrow">→</span>
+      <span class="trap-step">Fix applied</span>
+      <span class="trap-arrow">→</span>
+      <span class="trap-step">Test passed</span>
+    </div>
+    <p>This creates confidence. But confidence is not evidence. A test may show that a specific issue was addressed — it does not show that operational risk has been reduced across the broader system.</p>
+  </div>
+
+  <p>Closing the incident here is the most common place safety improvement claims quietly become unverifiable.</p>
+
+  <hr class="section-divider">
+
+  <!-- WHY TRACEABILITY MATTERS -->
+  <h2>Why traceability matters</h2>
+
+  <p>The ability to connect an incident to its investigation, its corrective action, its validation activity, and its resulting safety evidence is what organisations call traceability.</p>
+
+  <div class="compare-grid">
+    <div class="compare-cell dim">
+      <div class="cc-label">Commonly assumed</div>
+      <div class="cc-event">Traceability is documentation — a record of what was done.</div>
+    </div>
+    <div class="compare-cell">
+      <div class="cc-label">What it actually is</div>
+      <div class="cc-event better">Traceability is the ability to explain how an improvement claim is supported by evidence.</div>
+    </div>
+  </div>
+
+  <p>Without it, learning becomes fragmented, improvements become difficult to verify, and regulatory confidence becomes harder to establish. Most importantly, organisations struggle to demonstrate — to anyone — that safety is actually improving.</p>
+
+  <hr class="section-divider">
+
+  <!-- BRIDGE TO SERIES -->
+  <h2>Connecting back to the series</h2>
+
+  <div class="bridge-box">
+    <div class="bb-label">The thread across all three frameworks</div>
+    <p>Framework #2 explored how operational events become learning through scenario intelligence. That learning is the foundation — but learning alone doesn't prove anything changed.</p>
+    <p>Framework #1 introduced the Safety Evidence Gap — the observation that operators, regulators, insurers, and the public all evaluate safety through different evidence. But all four eventually ask the same underlying question: <strong>how do you know safety improved?</strong></p>
+    <p>The Incident-to-Improvement Framework™ is the attempt to answer that question — not through assumptions, and not through intentions, but through evidence that holds up across all four stakeholder groups.</p>
+  </div>
+
+  <!-- QUESTIONS -->
+  <div class="questions-block">
+    <div class="q-label">Questions worth holding</div>
+    <ol>
+      <li><p>If two organisations identify the same risk and implement the same corrective action, but only one can demonstrate reduced risk over time, have they achieved the same level of safety improvement?</p></li>
+      <li><p>How many corrective actions inside your organisation are currently closed at validation — confident, but unproven?</p></li>
+      <li><p>As autonomous systems scale, will the organisations that can most effectively connect incidents to measurable improvement become the ones most trusted by regulators, insurers, and the public?</p></li>
+    </ol>
+  </div>
+
+  <p>The answer to that last question may ultimately separate organisations that talk about safety improvement from organisations that can prove it.</p>
+
+  <div class="tags" style="margin-top:32px;">
+    <span class="tag">Incident management</span>
+    <span class="tag">Risk reduction</span>
+    <span class="tag">Traceability</span>
+    <span class="tag">Safety evidence</span>
+    <span class="tag">Corrective action</span>
+    <span class="tag">Validation</span>
+    <span class="tag">Framework series</span>
+  </div>
+
+  <!-- SERIES NAV -->
+  <div class="series-nav">
+    <a href="scenario-intelligence.html" class="series-nav-cell">
+      <div class="snc-label">← Previous · Framework #2</div>
+      <div class="snc-title">The Scenario Intelligence Framework™</div>
+    </a>
+    <div class="series-nav-cell" style="opacity:0.4; pointer-events:none;">
+      <div class="snc-label">Next · Framework #4 →</div>
+      <div class="snc-title">The Operational Trust Framework™</div>
+    </div>
+  </div>
+
+  <div class="cta-strip">
+    <div>
+      <h3>Follow the research on LinkedIn.</h3>
+      <p>New frameworks published regularly. If something connects with a challenge you are working through, reach out.</p>
+    </div>
+    <a href="contact.html" class="cta-link">Get in touch →</a>
+  </div>
+
+</main>
+
+<footer>
+  <div>
+    <div class="footer-name">ITquette Autonomous Lab</div>
+    <div class="footer-sub">Intelligence in Motion</div>
+  </div>
+  <ul class="footer-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="insights.html">Insights</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="footer-copy">© 2026 ITquette Autonomous Lab</div>
+</footer>
+
+</body>
+</html>
