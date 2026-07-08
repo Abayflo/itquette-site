@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Research — ITquette Autonomous Lab</title>
+<meta name="description" content="Original research frameworks on AV safety governance, operational learning, incident management, and credible evidence of safety improvement.">
+<style>
+/* ITquette Autonomous Lab — Site Styles */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap');
+
+:root {
+  --bg: #f5f4f0;
+  --paper: #faf9f7;
+  --ink: #0c0c0f;
+  --accent: #0c3547;
+  --accent2: #0e4260;
+  --gold: #b8952a;
+  --gold-light: #d4ac3a;
+  --muted: #6a6760;
+  --rule: #e0ddd8;
+  --surface: #ffffff;
+  --surface2: #f0ede8;
+  --green: #1a5c3a;
+  --max: 860px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+/* NAV */
+nav {
+  background: var(--accent);
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.nav-mark {
+  width: 30px; height: 30px;
+  border: 1.5px solid var(--gold);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.nav-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 0.03em;
+  line-height: 1;
+}
+.nav-sub {
+  font-family: 'DM Mono', monospace;
+  font-size: 7.5px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  margin-top: 2px;
+  opacity: 0.82;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.nav-links a:hover,
+.nav-links a.active { color: #fff; }
+
+/* GOLD BAR */
+.gold-bar { height: 2px; background: var(--gold); }
+
+/* MAIN */
+main { max-width: var(--max); margin: 0 auto; padding: 64px 32px 80px; }
+
+/* TYPOGRAPHY */
+.eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+  display: block;
+}
+
+h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(34px, 5vw, 54px);
+  font-weight: 600;
+  line-height: 1.06;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  margin-bottom: 20px;
+}
+h1 em { font-style: italic; color: var(--accent); }
+
+h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--accent);
+  line-height: 1.2;
+  margin-bottom: 18px;
+  margin-top: 48px;
+}
+
+h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.3;
+  margin-bottom: 10px;
+}
+
+p { margin-bottom: 16px; color: var(--muted); font-size: 14.5px; }
+p strong { color: var(--ink); font-weight: 500; }
+p em { color: var(--accent); font-style: normal; }
+
+.standfirst {
+  font-size: 17px;
+  font-weight: 300;
+  line-height: 1.65;
+  color: #3a3834;
+  border-left: 2px solid var(--gold);
+  padding-left: 18px;
+  margin-bottom: 40px;
+  max-width: 640px;
+}
+
+/* DIVIDER */
+.section-divider {
+  border: none;
+  border-top: 1px solid var(--rule);
+  margin: 48px 0;
+}
+
+/* CARDS */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 16px;
+  margin-bottom: 40px;
+}
+.card-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  padding: 24px 20px;
+  position: relative;
+  overflow: hidden;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+}
+.card:nth-child(1)::before { background: var(--accent); }
+.card:nth-child(2)::before { background: var(--gold); }
+.card:nth-child(3)::before { background: var(--green); }
+.card:nth-child(4)::before { background: #7c3aed; }
+
+.card-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 38px;
+  font-weight: 700;
+  color: var(--rule);
+  line-height: 0.9;
+  margin-bottom: 12px;
+}
+.card h3 { margin-bottom: 8px; }
+.card p { font-size: 13px; margin-bottom: 0; }
+
+/* DARK STRIP */
+.dark-strip {
+  background: var(--accent);
+  border-left: 3px solid var(--gold);
+  padding: 22px 26px;
+  margin: 32px 0;
+}
+.dark-strip p {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px;
+  font-style: italic;
+  color: rgba(255,255,255,0.88);
+  line-height: 1.6;
+  margin: 0;
+}
+.dark-strip p strong { font-style: normal; color: var(--gold-light); font-weight: 600; }
+
+/* BULLET LIST */
+.clean-list { list-style: none; margin: 0 0 16px; }
+.clean-list li {
+  font-size: 13.5px;
+  color: var(--muted);
+  line-height: 1.6;
+  padding-left: 16px;
+  position: relative;
+  margin-bottom: 5px;
+}
+.clean-list li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--rule);
+  font-size: 12px;
+}
+
+/* TAGS */
+.tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 12px; }
+.tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 8.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 7px;
+  border: 1px solid var(--rule);
+  color: var(--muted);
+  border-radius: 2px;
+}
+
+/* LIFECYCLE */
+.lifecycle {
+  background: var(--surface2);
+  border: 1px solid var(--rule);
+  padding: 22px 26px;
+  margin: 32px 0;
+}
+.lc-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+.lc-phases { display: flex; align-items: center; flex-wrap: wrap; gap: 0; }
+.phase-box {
+  background: #fff;
+  border: 1px solid var(--rule);
+  padding: 8px 10px;
+  text-align: center;
+  min-width: 96px;
+}
+.phase-name { font-size: 11px; font-weight: 500; color: var(--ink); line-height: 1.3; margin-bottom: 2px; }
+.phase-sub { font-family: 'DM Mono', monospace; font-size: 7.5px; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; }
+.phase-arr { font-size: 11px; color: var(--rule); padding: 0 5px; flex-shrink: 0; }
+
+/* INSIGHT CARDS */
+.insight-grid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 14px;
+  margin: 28px 0;
+}
+.insight-card {
+  border: 1px solid var(--rule);
+  padding: 20px 18px;
+  text-decoration: none;
+  display: block;
+  transition: border-color 0.15s;
+}
+.insight-card:hover { border-color: var(--accent); }
+.insight-type {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.insight-card h3 { font-size: 15px; margin-bottom: 8px; color: var(--ink); }
+.insight-card p { font-size: 12.5px; margin: 0; }
+
+/* CTA STRIP */
+.cta-strip {
+  background: var(--accent);
+  padding: 32px 36px;
+  margin-top: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+.cta-strip h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-weight: 600;
+  font-style: italic;
+  color: #fff;
+  margin-bottom: 6px;
+}
+.cta-strip p { color: rgba(255,255,255,0.48); font-size: 13px; margin: 0; }
+.cta-link {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  text-decoration: none;
+  border: 1px solid rgba(184,149,42,0.4);
+  padding: 10px 18px;
+  white-space: nowrap;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+.cta-link:hover { background: rgba(184,149,42,0.1); }
+
+/* FOOTER */
+footer {
+  background: var(--accent);
+  padding: 20px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 0;
+}
+.footer-brand { display: flex; align-items: center; gap: 10px; }
+.footer-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+}
+.footer-sub {
+  font-family: 'DM Mono', monospace;
+  font-size: 7.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  opacity: 0.8;
+  margin-top: 2px;
+}
+.footer-links { display: flex; gap: 20px; list-style: none; }
+.footer-links a {
+  font-family: 'DM Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.42);
+  text-decoration: none;
+}
+.footer-links a:hover { color: rgba(255,255,255,0.75); }
+.footer-copy {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: rgba(255,255,255,0.28);
+  letter-spacing: 0.08em;
+}
+
+@media (max-width: 640px) {
+  nav { padding: 0 18px; }
+  main { padding: 40px 18px 60px; }
+  .card-grid, .card-grid-2, .insight-grid { grid-template-columns: 1fr; }
+  .lc-phases { gap: 6px; }
+  .cta-strip { flex-direction: column; align-items: flex-start; }
+  footer { flex-direction: column; align-items: flex-start; }
+}
+
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-brand">
+    <div class="nav-mark">
+      <svg width="18" height="18" viewBox="0 0 22 22" fill="none">
+        <circle cx="11" cy="11" r="4.5" fill="none" stroke="#b8952a" stroke-width="1.4"/>
+        <circle cx="11" cy="11" r="9.5" fill="none" stroke="#b8952a" stroke-width="0.9"/>
+        <line x1="11" y1="1" x2="11" y2="4" stroke="#b8952a" stroke-width="1.4" stroke-linecap="round"/>
+        <line x1="11" y1="18" x2="11" y2="21" stroke="#b8952a" stroke-width="1.4" stroke-linecap="round"/>
+        <line x1="1" y1="11" x2="4" y2="11" stroke="#b8952a" stroke-width="1.4" stroke-linecap="round"/>
+        <line x1="18" y1="11" x2="21" y2="11" stroke="#b8952a" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div>
+      <div class="nav-name">ITquette</div>
+      <div class="nav-sub">Autonomous Lab</div>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="research.html" class="active">Research</a></li>
+    <li><a href="insights.html">Insights</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</nav>
+<div class="gold-bar"></div>
+
+<main>
+
+  <span class="eyebrow">Research Program</span>
+  <h1>How autonomous systems turn<br>operational experience into <em>credible<br>safety evidence</em></h1>
+
+  <p class="standfirst">ITquette research focuses on the operational systems, governance structures, and evidence pathways that help autonomous mobility scale safely, learn continuously, and earn trust over time.</p>
+
+  <hr class="section-divider">
+
+  <h2>The ITquette Thesis</h2>
+  <p>Autonomous mobility is often discussed as a technology challenge. The conversation typically focuses on perception systems, autonomy stacks, simulation environments, edge cases, and vehicle performance.</p>
+  <p>These topics matter. But as autonomous systems move beyond testing and into real-world operations, a different challenge begins to emerge.</p>
+  <p>Organizations must do more than operate safely. They must demonstrate, explain, and continuously improve safety in ways that can be understood by operators, regulators, insurers, and the public.</p>
+  <div class="dark-strip">
+    <p><strong>ITquette explores how autonomous mobility organizations transform operational experience into credible evidence of safety improvement.</strong></p>
+  </div>
+  <p>This research program examines how organizations learn from operational events, identify recurring patterns, implement corrective actions, measure improvement, and build confidence in their safety claims.</p>
+
+  <hr class="section-divider">
+
+  <h2>Framework Series</h2>
+  <p>The ITquette Framework Series is a structured body of work exploring how safety evidence is created, interpreted, and trusted as autonomous operations scale.</p>
+
+  <div class="card-grid-2" style="margin-bottom:16px;">
+    <a href="safety-evidence-gap.html" class="card" style="border-top-color: var(--gold); text-decoration:none; display:block;">
+      <div class="insight-type" style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">Framework #1 · May 2026</div>
+      <h3 style="color:var(--ink);">The Safety Evidence Gap Framework™</h3>
+      <p>Why safety improvement and safety acceptance are not always the same thing. This framework maps how operators, regulators, insurers, and the public rely on different evidence when evaluating AV safety.</p>
+      <p style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.1em;color:var(--gold);margin-bottom:0;">Read Framework #1 →</p>
+      <div class="tags"><span class="tag">Safety evidence</span><span class="tag">Stakeholder trust</span><span class="tag">Governance</span></div>
+    </a>
+
+    <a href="scenario-intelligence.html" class="card" style="border-top-color: var(--accent); text-decoration:none; display:block;">
+      <div class="insight-type" style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">Framework #2 · June 2026</div>
+      <h3 style="color:var(--ink);">The Scenario Intelligence Framework™</h3>
+      <p>How operational events become organizational learning. This framework explains why collecting incidents is not enough, and how scenario definition turns events into reusable safety intelligence.</p>
+      <p style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.1em;color:var(--gold);margin-bottom:0;">Read Framework #2 →</p>
+      <div class="tags"><span class="tag">Scenario intelligence</span><span class="tag">Safety learning</span><span class="tag">Operations</span></div>
+    </a>
+
+    <a href="incident-to-improvement.html" class="card" style="border-top-color: var(--green); text-decoration:none; display:block;">
+      <div class="insight-type" style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">Framework #3 · June 2026</div>
+      <h3 style="color:var(--ink);">The Incident-to-Improvement Framework™</h3>
+      <p>How organizations demonstrate that risk has actually been reduced. This framework traces the path from incident to investigation, corrective action, validation, safety evidence, and risk reduction.</p>
+      <p style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.1em;color:var(--gold);margin-bottom:0;">Read Framework #3 →</p>
+      <div class="tags"><span class="tag">Risk reduction</span><span class="tag">Traceability</span><span class="tag">Improvement</span></div>
+    </a>
+
+    <div class="card" style="border-top-color:#7c3aed; opacity: 0.6;">
+      <div class="insight-type" style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">Framework #4 · In development</div>
+      <h3>The Operational Trust Framework™</h3>
+      <p>How credible evidence becomes stakeholder confidence — and why trust is not created by safety claims alone.</p>
+      <div class="tags"><span class="tag">Trust</span><span class="tag">Credibility</span><span class="tag">Safety claims</span></div>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <h2>Research Notes</h2>
+  <p>Shorter observations on incident response, safety governance, regulatory relations, and operational readiness in autonomous mobility.</p>
+
+  <div class="card-grid-2">
+    <div class="card" style="border-top-color: var(--accent);">
+      <div class="insight-type">Research note · Incident response</div>
+      <h3>Incidents are sequences, not moments</h3>
+      <p>The hardest part of an incident is often everything after it — triage, evidence collection, handoffs, after action review, and corrective action closure. Trust improves when this lifecycle is consistent and auditable, not just when the initial response is fast. Regulators and city partners do not only ask what happened. They ask what changed afterward.</p>
+      <div class="tags"><span class="tag">Incident lifecycle</span><span class="tag">Evidence</span><span class="tag">Trust</span></div>
+    </div>
+    <div class="card" style="border-top-color: var(--gold);">
+      <div class="insight-type">Research note · Safety governance</div>
+      <h3>UL 4600 is a safety argument that must be maintained</h3>
+      <p>Organisations often treat UL 4600 compliance as a milestone rather than a continuous commitment. Safety maturity shows up in governance, not just in testing results. The question is not whether a system passed its initial safety case review — it is whether the safety case remains accurate after 50,000 miles of operational data and three software updates.</p>
+      <div class="tags"><span class="tag">UL 4600</span><span class="tag">Safety cases</span><span class="tag">Governance</span></div>
+    </div>
+    <div class="card" style="border-top-color: var(--green);">
+      <div class="insight-type">Research note · Regulatory relations</div>
+      <h3>Trust is cumulative for cities and regulators</h3>
+      <p>Stakeholders ask what changed afterward, how recurrence is prevented, and how consistency is maintained across markets. The operators who build a track record of transparent, well-documented incident response are in a structurally different position when scrutiny arrives than those constructing their narrative after the fact.</p>
+      <div class="tags"><span class="tag">Regulatory relations</span><span class="tag">Narrative readiness</span><span class="tag">Operating licences</span></div>
+    </div>
+    <div class="card" style="border-top-color:#7c3aed;">
+      <div class="insight-type">Research note · Deployment strategy</div>
+      <h3>Start narrow, then scale</h3>
+      <p>The instinct in large organisations is to design the complete end-to-end governance system before deploying any of it. In practice this creates frameworks too abstract to implement and too rigid to adapt. Narrow implementation with genuine ownership is more valuable than a comprehensive process that exists only in documentation.</p>
+      <div class="tags"><span class="tag">Implementation</span><span class="tag">Operational readiness</span><span class="tag">Scale</span></div>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <h2>Research Areas</h2>
+  <div class="tags">
+    <span class="tag">Safety lifecycle governance</span>
+    <span class="tag">Operational intelligence</span>
+    <span class="tag">Scenario intelligence</span>
+    <span class="tag">Incident management</span>
+    <span class="tag">Safety assurance</span>
+    <span class="tag">Operational resilience</span>
+  </div>
+
+  <div class="cta-strip">
+    <div><h3>Explore the latest industry analysis.</h3><p>Research frameworks are the foundation. Insights apply that thinking to current AV developments.</p></div>
+    <a href="insights.html" class="cta-link">Latest insights →</a>
+  </div>
+
+</main>
+
+<footer>
+  <div class="footer-brand">
+    <div>
+      <div class="footer-name">ITquette Autonomous Lab</div>
+      <div class="footer-sub">Intelligence in Motion</div>
+    </div>
+  </div>
+  <ul class="footer-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="research.html">Research</a></li>
+    <li><a href="insights.html">Insights</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="footer-copy">© 2026 Itquette LLC · ITquette Autonomous Lab</div>
+</footer>
+
+</body>
+</html>
