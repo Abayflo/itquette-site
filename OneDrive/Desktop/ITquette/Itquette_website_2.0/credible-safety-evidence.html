@@ -85,6 +85,12 @@ footer{background:var(--accent);padding:20px 32px;display:flex;align-items:cente
 .footer-links a:hover{color:rgba(255,255,255,0.75);}
 .footer-copy{font-family:'DM Mono',monospace;font-size:9px;color:rgba(255,255,255,0.28);letter-spacing:0.08em;}
 @media(max-width:640px){nav{padding:0 18px;}main{padding:40px 18px 60px;}.card-grid,.insight-grid{grid-template-columns:1fr;}.series-items{gap:6px;}.cta-strip{flex-direction:column;align-items:flex-start;}footer{flex-direction:column;align-items:flex-start;}}
+
+.series-nav{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);margin-top:48px;}
+.series-nav-cell{background:var(--bg);padding:24px 28px;text-decoration:none;transition:background 0.15s;}
+.series-nav-cell:hover{background:#f0ece4;}
+.snc-label{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.22em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.snc-title{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;color:var(--accent);line-height:1.3;}
 </style>
 </head>
 <body>
@@ -258,6 +264,19 @@ footer{background:var(--accent);padding:20px 32px;display:flex;align-items:cente
       <h3>The Incident-to-Improvement Framework™</h3>
       <p>How organizations demonstrate that corrective actions produced measurable risk reduction.</p>
     </a>
+  </div>
+
+
+  <!-- SERIES NAV -->
+  <div class="series-nav">
+    <a href="incident-to-improvement.html" class="series-nav-cell">
+      <div class="snc-label">← Previous · Framework #3</div>
+      <div class="snc-title">The Incident-to-Improvement Framework™</div>
+    </a>
+    <div class="series-nav-cell" style="opacity:0.4; pointer-events:none;">
+      <div class="snc-label">Next · Framework #5 →</div>
+      <div class="snc-title">Coming soon</div>
+    </div>
   </div>
 
   <div class="cta-strip">
